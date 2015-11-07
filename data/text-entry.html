@@ -3,23 +3,43 @@
     <style type="text/css" media="all">
       body {
         background-color: #F4F4F4;
-        width:200px;
+        width:220px;
+        margin:0px;
+        padding:0px;
       }
       #addon_head
       {
-        width:200px;
+        width:220px;
         text-align:center;
+        padding-top:4px;
         padding-bottom:10px;
       }
       #wrapper
       {
-        width:200px;
+        width:220px;
+      }
+      #myimg
+      {
+        position:absolute;
+        display:none;
+        top:25px;
+        left:85px;
+        width:50px;
+        height:50px;
+      }
+      #loader
+      {
+        position:absolute;
+        top:35px;
+        left:102.5px;
+        width:15px;
+        height:15px;
       }
       #wall
       {
         position:relative;
         top:0px;
-        left:75px;
+        left:85px;
         width:50px;
         height:50px;
         transition:top 0.7s;
@@ -27,7 +47,7 @@
       #btn
       {
         position:relative;
-        left:46px;
+        left:56px;
         width:80px;
         height:20px;
         padding:4px 4px 4px 4px;
@@ -46,9 +66,32 @@
       input
       {
         width:180px;
-        margin:5px 10px 5px 10px;
-        font-size:20px;
+        margin:5px 20px 5px 20px;
+        font-size:16px;
         text-align:center;
+      }
+      #statwrap
+      {
+        display:none;
+        position:absolute;
+        height:30px;
+        top:80px;
+        width:220px;
+      }
+      .stats
+      {
+        display:inline-block;
+        margin:0px;
+        height:30px;
+        padding:0px;
+        width:110px;
+        text-align:center;
+        color:#767676;
+      }
+      .stats>.count
+      {
+        font-size:20px;
+        color:#4078c0;
       }
     </style>
   </head>
