@@ -1,6 +1,7 @@
 var { ToggleButton } = require('sdk/ui/button/toggle');
 var panels = require("sdk/panel");
 var self = require("sdk/self");
+var tabs = require("sdk/tabs");
 var user = '';
 
 var button = ToggleButton({
@@ -34,6 +35,10 @@ function handleChange(state) {
 
 panel.port.on("authorised",function(data){
   user=data;
+  });
+
+panel.port.on("redirect_to_repo",function(){
+  tabs.open("https://github.com/mbad0la/MiniGithub");
   });
 
 function handleHide() {

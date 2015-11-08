@@ -13,6 +13,14 @@
         text-align:center;
         padding-top:4px;
         padding-bottom:10px;
+        font-size:14px;
+      }
+      #addon_head>.mega-octicon.octicon-logo-github
+      {
+        color:#333;
+        font-size:30px;
+        position:relative;
+        top:3px;
       }
       #wrapper
       {
@@ -22,7 +30,7 @@
       {
         position:absolute;
         display:none;
-        top:25px;
+        top:35px;
         left:85px;
         width:50px;
         height:50px;
@@ -42,7 +50,12 @@
         left:85px;
         width:50px;
         height:50px;
+        z-index:50;
         transition:top 0.7s;
+      }
+      #wall>.mega-octicon.octicon-mark-github
+      {
+        font-size:46px;
       }
       #btn
       {
@@ -75,7 +88,7 @@
         display:none;
         position:absolute;
         height:30px;
-        top:80px;
+        top:90px;
         width:220px;
       }
       .stats
@@ -93,12 +106,78 @@
         font-size:20px;
         color:#4078c0;
       }
+      #addonoptions
+      {
+        position:absolute;
+        display:none;
+        top:140px;
+        width:220px;
+      }
+      .optab
+      {
+        display:block;
+        position:relative;
+        left:10px;
+        width:200px;
+        padding-top:3px;
+        padding-bottom:2px;
+        height:26px;
+        background-color:#F5F5F5;
+        background-image:linear-gradient(#F4F4F4,#F5F5F5);
+        box-shadow:0px 0px 5px #B9B9B9;
+        margin:2px 0px 2px 0px;
+        transition:height 0.4s,color 0.4s;
+        color:lightgray;
+        text-align:center;
+        overflow:hidden;
+      }
+      .optab:hover
+      {
+        cursor:pointer;
+        color:#333;
+        height:48px;
+      }
+      .optab:hover>.octicon
+      {
+        color:#333!important;
+      }
+      .optag
+      {
+        position:relative;
+        top:2px;
+      }
+      .optab>.octicon
+      {
+        font-size:24px!important;
+        color:lightgray;
+        transition:color 0.4s;
+      }
+      #footer
+      {
+        position:absolute;
+        width:220px;
+        bottom:0px;
+        height:20px;
+        text-align:center;
+        font-size:12px;
+      }
+      #goTorepo
+      {
+        color:#4078c0;
+      }
+      #goTorepo:hover
+      {
+        cursor:pointer;
+        border-bottom:1px solid #4078c0;
+      }
     </style>
+    <link href="octicons.css" type="text/css" rel="stylesheet">
   </head>
 <body>
-    <div id="addon_head">MiniGithub</div>
+    <div id="addon_head">Mini<span class="mega-octicon octicon-logo-github"></span></div>
     <div id="wrapper">
         
     </div>
+    <div id="footer">Created with <span class="octicon octicon-heart"></span> by <span id="goTorepo">@mbad0la</span></div>
   </body>
 </html>
