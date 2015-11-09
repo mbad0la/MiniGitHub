@@ -1,8 +1,8 @@
 {
-  "title": "My Jetpack Addon",
-  "name": "addon1",
+  "title": "MiniGithub",
+  "name": "minigithub",
   "version": "0.0.1",
-  "description": "A basic add-on",
+  "description": "Github Notifier",
   "main": "index.js",
   "author": "Mayank Badola",
   "engines": {

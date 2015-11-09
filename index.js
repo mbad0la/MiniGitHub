@@ -2,14 +2,14 @@ var { ToggleButton } = require('sdk/ui/button/toggle');
 var panels = require("sdk/panel");
 var self = require("sdk/self");
 var tabs = require("sdk/tabs");
-var user = '';
+
 
 var button = ToggleButton({
   id: "my-button",
-  label: "my button",
+  label: "miniGithub",
   icon: {
-    "16": "./icon-16.png",
-    "32": "./icon-32.png",
+    "16": "./ghubicon.ico",
+    "32": "./ghubicon.ico",
     "64": "./icon-64.png"
   },
   onChange: handleChange
@@ -23,24 +23,33 @@ var panel = panels.Panel({
   onHide: handleHide
 });
 
-function handleChange(state) {
-  if (state.checked) {
-    panel.show({
-      position: button
-    });
-    panel.port.emit("show",user);
-    
-  }
-}
 
-panel.port.on("authorised",function(data){
-  user=data;
-  });
+
+
 
 panel.port.on("redirect_to_repo",function(){
   tabs.open("https://github.com/mbad0la/MiniGithub");
+  });
+panel.port.on("redirect_to_github",function(){
+  tabs.open("https://github.com");
   });
 
 function handleHide() {
   button.state('window', {checked: false});
 }
+
+
+
+
+
+function handleChange(state) {
+  if (state.checked) {
+    panel.show({
+      position: button
+    });
+    panel.port.emit("show");
+    
+  }
+}
+
+
