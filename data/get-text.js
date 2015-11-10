@@ -1,4 +1,6 @@
 var trending = [];
+var events = [];
+var ei = 0;
 var traverse = 0;
 function createCookie(name, value, days) {
     var expires;
@@ -26,6 +28,19 @@ function readCookie(name) {
 
 function eraseCookie(name) {
     createCookie(name, "", -1);
+}
+
+function formateventobj(obj,type)
+{
+    if (type == "WatchEvent") {
+        return obj['actor']['login'] + ' starred the repository ' + obj['repo']['name'];
+    }
+    else if (type == "ForkEvent") {
+        return obj['actor']['login'] + ' forked the repository ' + obj['repo']['name'];
+    }
+    else if (type == "PushEvent") {
+        return obj['actor']['login'] + ' pushed changes to the repository ' + obj['repo']['name'];
+    }
 }
 
 function buildhome(u,t)
@@ -80,7 +95,8 @@ self.port.on("show", function onShow() {
     {
         $('#wrapper,#addonoptions').empty();
         $('#addonoptions').css('top',0);
-        $('#datawrap').css('display','none');
+        $('#addon_head').css('visibility','visible')
+        $('.datawrap').css('display','none');
         user = user.split('@');
         buildhome(user[0],user[1]);
     }
@@ -126,13 +142,13 @@ $('#addonoptions').on('click','#gettrending',function(){
             success:function(r){
                 console.log(r['items'].length);
                 trending = r['items'];
-                $('#Head').text(trending[traverse]['full_name']);
-                $('#description').text(trending[traverse]['description']);
+                $('#Head1').text(trending[traverse]['full_name']);
+                $('#description1').text(trending[traverse]['description']);
                 $('#watchers').text(trending[traverse]['watchers_count']);
                 $('#stars').text(trending[traverse]['stars_count']);
                 $('#forks').text(trending[traverse]['forks_count']);
                 $('#loader').fadeOut().remove();
-                $('#datawrap').fadeIn();
+                $('#datawrap1').fadeIn();
             },
             error:function(r){console.log(r);}
         });
@@ -140,12 +156,12 @@ $('#addonoptions').on('click','#gettrending',function(){
         }
         else
         {
-                $('#Head').text(trending[traverse]['full_name']);
-                $('#description').text(trending[traverse]['description']);
+                $('#Head1').text(trending[traverse]['full_name']);
+                $('#description1').text(trending[traverse]['description']);
                 $('#watchers').text(trending[traverse]['watchers_count']);
                 $('#stars').text(trending[traverse]['stars_count']);
                 $('#forks').text(trending[traverse]['forks_count']);
-                $('#datawrap').fadeIn();
+                $('#datawrap1').fadeIn();
         }
     }
     else
@@ -158,7 +174,7 @@ $('#addonoptions').on('click','#gettrending',function(){
         $('#getevents').css('top',-1*$('#getevents').position().top);
         $(this).css({'height':26,'color':'lightgray'});
         $(this).find('.octicon.octicon-flame').css('color','lightgray');
-        $('#datawrap').css('display','none');
+        $('#datawrap1').css('display','none');
     }
     
     
@@ -181,20 +197,36 @@ $('#addonoptions').on('click','#getnotif',function(){
         $(this).find('.octicon.octicon-home').css('color','#333');
         var user = readCookie('minigithubcookie');
         user = user.split('@');
-        /*$.ajax({
-            url:'https://mbad0la.pythonanywhere.com/trending',
+        $.ajax({
+            url:'https://mbad0la.pythonanywhere.com/notifications',
             type:'post',
             dataType:'json',
             data:{user:user[0],token:user[1]},
             success:function(r){
-                console.log(r['items'].length);
-                for(var i=0;i<r['items'].length;i++)
-                {
-                    console.log(r['items'][i]['full_name'])
+                console.log(r.length);
+                var val = Math.floor((Math.random() * 4));
+                $('#loader').fadeOut().remove();
+                $('#left2,#right2').css('display','none');
+                if (val == 0) {
+                    $('#Head2').text('Relax!');
+                    $('#description2').css('text-align','center').text('You have no new notifications');
+                   
                 }
+                else if (val!=1) {
+                    $('#Head2').text('Suit Up!');
+                    $('#description2').css('text-align','center').text('You have '+val+' new notifications');
+                    
+                }
+                else
+                {
+                    $('#Head2').text('Almost Nothing!');
+                    $('#description2').css('text-align','center').text('You have '+val+' new notification');
+                }
+                $('#datawrap2').fadeIn();
             },
             error:function(r){console.log(r);}
-        });*/
+        });
+        $('body').append('<img id="loader" src="ajax-loader.gif"/>');
     }
     else
     {
@@ -206,6 +238,7 @@ $('#addonoptions').on('click','#getnotif',function(){
         $('#getevents').css('top',-1*$('#getevents').position().top);
         $(this).css({'height':26,'color':'lightgray'});
         $(this).find('.octicon.octicon-bell').css('color','lightgray');
+        $('#datawrap2').css('display','none');
     }
     
 });
@@ -226,20 +259,49 @@ $('#addonoptions').on('click','#getevents',function(){
         $(this).find('.octicon.octicon-home').css('color','#333');
         var user = readCookie('minigithubcookie');
         user = user.split('@');
-        /*$.ajax({
-            url:'https://mbad0la.pythonanywhere.com/trending',
+        if(events.length == 0)    
+        {
+        $.ajax({
+            url:'https://mbad0la.pythonanywhere.com/events',
             type:'post',
             dataType:'json',
             data:{user:user[0],token:user[1]},
             success:function(r){
-                console.log(r['items'].length);
-                for(var i=0;i<r['items'].length;i++)
-                {
-                    console.log(r['items'][i]['full_name'])
+                events = r;
+                if (r[0]['type']=="WatchEvent") {
+                    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-star"></span>');
+                    
                 }
+                else if (r[0]['type']=="ForkEvent") {
+                    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-forked"></span>');
+                }
+                else if (r[0]['type']=="PushEvent") {
+                    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-push"></span>');
+                }
+                $('#description3').text(formateventobj(r[0],r[0]['type']));
+                $('#loader').fadeOut().remove();
+                
+                $('#datawrap3').fadeIn();
             },
             error:function(r){console.log(r);}
-        });*/
+        });
+        $('body').append('<img id="loader" src="ajax-loader.gif"/>');
+        }
+        else
+        {
+            if (r[ei]['type']=="WatchEvent") {
+                    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-star"></span>');
+                    
+                }
+                else if (r[ei]['type']=="ForkEvent") {
+                    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-forked"></span>');
+                }
+                else if (r[ei]['type']=="PushEvent") {
+                    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-push"></span>');
+                }
+                $('#description3').text(formateventobj(r[ei],r[ei]['type']));
+            $('#datawrap3').fadeIn();
+        }
     }
     else
     {
@@ -254,30 +316,67 @@ $('#addonoptions').on('click','#getevents',function(){
         $('#getevents').css('top',-1*$('#getevents').position().top);
         $(this).css({'height':26,'color':'lighgray'});
         $(this).find('.octicon.octicon-rss').css('color','lightgray');
+        $('#datawrap3').css('display','none');
     }
     
 });
 
 
-$('.left').click(function(){
+$('#left1').click(function(){
     traverse = traverse - 1;
     if (traverse == -1) 
         traverse = 24;
-    $('#Head').text(trending[traverse]['full_name']);
-    $('#description').text(trending[traverse]['description']);
+    $('#Head1').text(trending[traverse]['full_name']);
+    $('#description1').text(trending[traverse]['description']);
     $('#watchers').text(trending[traverse]['watchers_count']);
     $('#stars').text(trending[traverse]['stars_count']);
     $('#forks').text(trending[traverse]['forks_count']);
 });
 
-$('.right').click(function(){
+$('#right1').click(function(){
     traverse = traverse + 1;
     if (traverse == 25) 
         traverse = 0;
-    $('#Head').text(trending[traverse]['full_name']);
-    $('#description').text(trending[traverse]['description']);
+    $('#Head1').text(trending[traverse]['full_name']);
+    $('#description1').text(trending[traverse]['description']);
     $('#watchers').text(trending[traverse]['watchers_count']);
     $('#stars').text(trending[traverse]['stars_count']);
     $('#forks').text(trending[traverse]['forks_count']);
+});
+
+$('#left3').click(function(){
+    console.log('left');
+    ei = ei - 1;
+    if (ei == -1) 
+        ei = 29;
+    if (events[ei]['type']=="WatchEvent") {
+                    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-star"></span>');
+                    
+                }
+                else if (events[ei]['type']=="ForkEvent") {
+                    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-forked"></span>');
+                }
+                else if (events[ei]['type']=="PushEvent") {
+                    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-push"></span>');
+                }
+                $('#description3').text(formateventobj(events[ei],events[ei]['type']));
+});
+
+$('#right3').click(function(){
+    console.log('right');
+    ei = ei + 1;
+    if (ei == 29) 
+        ei = 0;
+    if (events[ei]['type']=="WatchEvent") {
+                    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-star"></span>');
+                    
+                }
+                else if (events[ei]['type']=="ForkEvent") {
+                    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-forked"></span>');
+                }
+                else if (events[ei]['type']=="PushEvent") {
+                    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-push"></span>');
+                }
+                $('#description3').text(formateventobj(events[ei],events[ei]['type']));
 });
 
