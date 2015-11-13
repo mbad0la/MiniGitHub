@@ -73,9 +73,16 @@ $("#wrapper").on('click','#btn',function(){
         dataType:'json',
         data:{user:u,token:$('#cred').val()},
         success:function(r){
+        if (r instanceof Object) {
+            $('#wall').css('top',0);
+            $('#wrapper').append('<input type="text" id="username" placeholder="Username"/></br><input type="password" id="cred" placeholder="Password"/><div id="btn">Go!</div>');
+        }
+        else
+        {
         AppData = u+'@'+r;
         createCookie('minigithubcookie',AppData,5);
         buildhome(u,r);
+        }
         },
         error:function(r){console.log(r);}
     });
