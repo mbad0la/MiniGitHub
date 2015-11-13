@@ -147,7 +147,7 @@ $('#addonoptions').on('click','#gettrending',function(){
             dataType:'json',
             data:{user:user[0],token:user[1]},
             success:function(r){
-                console.log(r['items'].length);
+                
                 trending = r['items'];
                 $('#Head1').text(trending[traverse]['full_name']);
                 $('#description1').text(trending[traverse]['description']);
@@ -210,24 +210,22 @@ $('#addonoptions').on('click','#getnotif',function(){
             dataType:'json',
             data:{user:user[0],token:user[1]},
             success:function(r){
-                console.log(r.length);
-                var val = Math.floor((Math.random() * 4));
                 $('#loader').fadeOut().remove();
                 $('#left2,#right2').css('display','none');
-                if (val == 0) {
+                if (r.length == 0) {
                     $('#Head2').text('Relax!');
                     $('#description2').css('text-align','center').text('You have no new notifications');
                    
                 }
-                else if (val!=1) {
+                else if (r.length!=1) {
                     $('#Head2').text('Suit Up!');
-                    $('#description2').css('text-align','center').text('You have '+val+' new notifications');
+                    $('#description2').css('text-align','center').text('You have '+r.length+' new notifications');
                     
                 }
                 else
                 {
                     $('#Head2').text('Almost Nothing!');
-                    $('#description2').css('text-align','center').text('You have '+val+' new notification');
+                    $('#description2').css('text-align','center').text('You have 1 new notification');
                 }
                 $('#datawrap2').fadeIn();
             },
@@ -352,7 +350,7 @@ $('#right1').click(function(){
 });
 
 $('#left3').click(function(){
-    console.log('left');
+    
     ei = ei - 1;
     if (ei == -1) 
         ei = 29;
@@ -370,7 +368,7 @@ $('#left3').click(function(){
 });
 
 $('#right3').click(function(){
-    console.log('right');
+    
     ei = ei + 1;
     if (ei == 29) 
         ei = 0;
