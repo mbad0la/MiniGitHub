@@ -52,4 +52,6 @@ function handleChange(state) {
   }
 }
 
-
+panel.port.on("gotoLink",function(data){
+  tabs.open(data);
+});

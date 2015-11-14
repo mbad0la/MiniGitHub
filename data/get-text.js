@@ -33,13 +33,13 @@ function eraseCookie(name) {
 function formateventobj(obj,type)
 {
     if (type == "WatchEvent") {
-        return obj['actor']['login'] + ' starred the repository ' + obj['repo']['name'];
+        return '<span class="link" ref="https://github.com/'+obj['actor']['login']+'">'+obj['actor']['login'] + '</span> starred the repository <span class="link" ref="https://github.com/'+obj['repo']['name']+'">' + obj['repo']['name'] +'</span>';
     }
     else if (type == "ForkEvent") {
-        return obj['actor']['login'] + ' forked the repository ' + obj['repo']['name'];
+        return '<span class="link" ref="https://github.com/'+obj['actor']['login']+'">' + obj['actor']['login'] + '</span> forked the repository ' + obj['repo']['name'] + '</span>';
     }
     else if (type == "PushEvent") {
-        return obj['actor']['login'] + ' pushed changes to the repository ' + obj['repo']['name'];
+        return '<span class="link" ref="https://github.com/'+obj['actor']['login']+'">' + obj['actor']['login'] + '</span> pushed changes to the repository ' + obj['repo']['name'] + '</span>';
     }
 }
 
@@ -135,8 +135,9 @@ $('#addonoptions').on('click','#gettrending',function(){
         $('#getevents').css('z-index',2);
         $('#gettrending').css('top',-1*$('#gettrending').position().top);
         $('#getevents').css('top',-1*$('#getevents').position().top);
-        $(this).css({'height':48,'color':'#333'});
-        $(this).find('.octicon.octicon-home').css('color','#333');
+        $(this).css({'height':48,'color':'lightgray!important'});
+        $(this).find('.octicon.octicon-home').css('color','lightgray');
+        $('#addonoptions>div').css('pointer-events','none');
         var user = readCookie('minigithubcookie');
         user = user.split('@');
         if(trending.length == 0)    
@@ -147,7 +148,9 @@ $('#addonoptions').on('click','#gettrending',function(){
             dataType:'json',
             data:{user:user[0],token:user[1]},
             success:function(r){
-                
+                $('#gettrending').css({'color':'#333'});
+                $('#gettrending').find('.octicon.octicon-home').css('color','#333');
+                $('#addonoptions>div').css('pointer-events','auto');
                 trending = r['items'];
                 $('#Head1').text(trending[traverse]['full_name']);
                 $('#description1').text(trending[traverse]['description']);
@@ -163,6 +166,9 @@ $('#addonoptions').on('click','#gettrending',function(){
         }
         else
         {
+                $('#gettrending').css({'color':'#333'});
+                $('#gettrending').find('.octicon.octicon-home').css('color','#333');
+                $('#addonoptions>div').css('pointer-events','auto');
                 $('#Head1').text(trending[traverse]['full_name']);
                 $('#description1').text(trending[traverse]['description']);
                 $('#watchers').text(trending[traverse]['watchers_count']);
@@ -200,8 +206,9 @@ $('#addonoptions').on('click','#getnotif',function(){
         $('#getevents').css('z-index',2);
         $('#gettrending').css('top',-1*$('#gettrending').position().top);
         $('#getevents').css('top',-1*$('#getevents').position().top);
-        $(this).css({'height':48,'color':'#333'});
-        $(this).find('.octicon.octicon-home').css('color','#333');
+        $(this).css({'height':48,'color':'lightgray!important'});
+        $(this).find('.octicon.octicon-home').css('color','lightgray');
+        $('#addonoptions>div').css('pointer-events','none');
         var user = readCookie('minigithubcookie');
         user = user.split('@');
         $.ajax({
@@ -212,6 +219,7 @@ $('#addonoptions').on('click','#getnotif',function(){
             success:function(r){
                 $('#loader').fadeOut().remove();
                 $('#left2,#right2').css('display','none');
+                
                 if (r.length == 0) {
                     $('#Head2').text('Relax!');
                     $('#description2').css('text-align','center').text('You have no new notifications');
@@ -227,6 +235,9 @@ $('#addonoptions').on('click','#getnotif',function(){
                     $('#Head2').text('Almost Nothing!');
                     $('#description2').css('text-align','center').text('You have 1 new notification');
                 }
+                $('#getnotif').css({'color':'#333'});
+                $('#getnotif').find('.octicon.octicon-home').css('color','#333');
+                $('#addonoptions>div').css('pointer-events','auto');
                 $('#datawrap2').fadeIn();
             },
             error:function(r){console.log(r);}
@@ -260,8 +271,9 @@ $('#addonoptions').on('click','#getevents',function(){
         $(this).find('.optag').text('Home');
         $('#gettrending').css('top',-1*$('#gettrending').position().top);
         $('#getevents').css('top',-1*$('#getevents').position().top);
-        $(this).css({'height':48,'color':'#333'});
-        $(this).find('.octicon.octicon-home').css('color','#333');
+        $(this).css({'height':48,'color':'lightgray!important'});
+        $(this).find('.octicon.octicon-home').css('color','lightgray');
+        $('#addonoptions>div').css('pointer-events','none');
         var user = readCookie('minigithubcookie');
         user = user.split('@');
         if(events.length == 0)    
@@ -273,6 +285,9 @@ $('#addonoptions').on('click','#getevents',function(){
             data:{user:user[0],token:user[1]},
             success:function(r){
                 events = r;
+                $('#getevents').css({'color':'#333'});
+                $('#getevents').find('.octicon.octicon-home').css('color','#333');
+                $('#addonoptions>div').css('pointer-events','auto');
                 if (r[0]['type']=="WatchEvent") {
                     $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-star"></span>');
                     
@@ -283,7 +298,7 @@ $('#addonoptions').on('click','#getevents',function(){
                 else if (r[0]['type']=="PushEvent") {
                     $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-push"></span>');
                 }
-                $('#description3').text(formateventobj(r[0],r[0]['type']));
+                $('#description3').html(formateventobj(r[0],r[0]['type']));
                 $('#loader').fadeOut().remove();
                 
                 $('#datawrap3').fadeIn();
@@ -294,17 +309,20 @@ $('#addonoptions').on('click','#getevents',function(){
         }
         else
         {
-            if (r[ei]['type']=="WatchEvent") {
+            $('#getevents').css({'color':'#333'});
+            $('#getevents').find('.octicon.octicon-home').css('color','#333');
+            $('#addonoptions>div').css('pointer-events','auto');
+            if (events[ei]['type']=="WatchEvent") {
                     $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-star"></span>');
                     
                 }
-                else if (r[ei]['type']=="ForkEvent") {
+                else if (events[ei]['type']=="ForkEvent") {
                     $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-forked"></span>');
                 }
-                else if (r[ei]['type']=="PushEvent") {
+                else if (events[ei]['type']=="PushEvent") {
                     $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-push"></span>');
                 }
-                $('#description3').text(formateventobj(r[ei],r[ei]['type']));
+                $('#description3').html(formateventobj(events[ei],events[ei]['type']));
             $('#datawrap3').fadeIn();
         }
     }
@@ -364,7 +382,7 @@ $('#left3').click(function(){
                 else if (events[ei]['type']=="PushEvent") {
                     $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-push"></span>');
                 }
-                $('#description3').text(formateventobj(events[ei],events[ei]['type']));
+                $('#description3').html(formateventobj(events[ei],events[ei]['type']));
 });
 
 $('#right3').click(function(){
@@ -382,6 +400,11 @@ $('#right3').click(function(){
                 else if (events[ei]['type']=="PushEvent") {
                     $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-push"></span>');
                 }
-                $('#description3').text(formateventobj(events[ei],events[ei]['type']));
+                $('#description3').html(formateventobj(events[ei],events[ei]['type']));
 });
 
+
+$('#description3').on('click','span',function(){
+    var link = $(this).attr('ref');
+    self.port.emit("gotoLink",link);
+});
