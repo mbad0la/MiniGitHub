@@ -1,6 +1,12 @@
 #MiniGithub
 A firefox addon facilitating client to stay connected to his account without logging into the github website.
 
+#####About the addon
+
+* Compact
+* Impressive UI for an addon ( :P )
+* Powered by Mozilla's Addon SDK
+
 #####Screenshots
 
 ![Login Screen](screenshots/login.png) 
@@ -8,3 +14,9 @@ A firefox addon facilitating client to stay connected to his account without log
 ![Notifs Screen](screenshots/notifs.png)
 ![Trend Screen](screenshots/trending.png)
 ![Events Screen](screenshots/events.png)
+
+#####Contributions
+
+Contributions are very much welcome. Please create an issue regarding how you'd like to improve or implement something in the Addon. I'll stay involved with your suggestions and merge viable requests.
+
+Cheers.
