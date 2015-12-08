@@ -2,7 +2,8 @@ var { ToggleButton } = require('sdk/ui/button/toggle');
 var panels = require("sdk/panel");
 var self = require("sdk/self");
 var tabs = require("sdk/tabs");
-
+var data = require("sdk/self").data;
+var pageMod = require("sdk/page-mod");
 
 var button = ToggleButton({
   id: "my-button",
@@ -23,7 +24,15 @@ var panel = panels.Panel({
   onHide: handleHide
 });
 
-
+pageMod.PageMod({
+  include: "https://mbad0la.pythonanywhere.com/redirect?code=*",
+  contentScriptFile: data.url("injectclose.js"),
+  onAttach: function(worker) {
+    worker.port.on("close_tab", function() {
+      worker.tab.close();
+    });
+  }
+});
 
 
 
