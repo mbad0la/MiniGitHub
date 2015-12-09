@@ -24,6 +24,7 @@ var panel = panels.Panel({
   onHide: handleHide
 });
 
+/*
 pageMod.PageMod({
   include: "https://mbad0la.pythonanywhere.com/redirect?code=*",
   contentScriptFile: data.url("injectclose.js"),
@@ -33,6 +34,7 @@ pageMod.PageMod({
     });
   }
 });
+*/
 
 
 
