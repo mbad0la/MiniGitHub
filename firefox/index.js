@@ -19,8 +19,8 @@ var button = ToggleButton({
 var panel = panels.Panel({
   width:220,
   height:300,
-  contentURL: self.data.url("text-entry.html"),
-  contentScriptFile: [self.data.url("jquery1.7.2.js"),self.data.url("get-text.js")],
+  contentURL: self.data.url("addon.html"),
+  contentScriptFile: [self.data.url("jquery-2.2.3.min.js"),self.data.url("script.js")],
   onHide: handleHide
 });
 
@@ -59,7 +59,7 @@ function handleChange(state) {
       position: button
     });
     panel.port.emit("show");
-    
+
   }
 }
 

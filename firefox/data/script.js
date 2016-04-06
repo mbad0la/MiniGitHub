@@ -3,6 +3,7 @@ var events = [];
 var ei = 0;
 var traverse = 0;
 function createCookie(name, value, days) {
+
     var expires;
 
     if (days) {
@@ -33,13 +34,13 @@ function eraseCookie(name) {
 function formateventobj(obj,type)
 {
     if (type == "WatchEvent") {
-        return '<span class="link" ref="https://github.com/'+obj['actor']['login']+'">'+obj['actor']['login'] + '</span> starred the repository <span class="link" ref="https://github.com/'+obj['repo']['name']+'">' + obj['repo']['name'] +'</span>';
+        return '<span class="link" ref="https://github.com/'+obj['actor']['login']+'">'+obj['actor']['login'] + '</span><br> starred the repository <br><span class="link" ref="https://github.com/'+obj['repo']['name']+'">' + obj['repo']['name'] +'</span>';
     }
     else if (type == "ForkEvent") {
-        return '<span class="link" ref="https://github.com/'+obj['actor']['login']+'">' + obj['actor']['login'] + '</span> forked the repository ' + obj['repo']['name'] + '</span>';
+        return '<span class="link" ref="https://github.com/'+obj['actor']['login']+'">' + obj['actor']['login'] + '</span><br> forked the repository <br>' + obj['repo']['name'] + '</span>';
     }
     else if (type == "PushEvent") {
-        return '<span class="link" ref="https://github.com/'+obj['actor']['login']+'">' + obj['actor']['login'] + '</span> pushed changes to the repository ' + obj['repo']['name'] + '</span>';
+        return '<span class="link" ref="https://github.com/'+obj['actor']['login']+'">' + obj['actor']['login'] + '</span><br> pushed changes to the repository <br>' + obj['repo']['name'] + '</span>';
     }
 }
 
@@ -51,7 +52,6 @@ function buildhome(u,t)
         dataType:'json',
         data:{user:u,token:t},
         success:function(r){
-            console.log(r);
             $('#wrapper').prepend('<img id="myimg" src="'+r['avatar_url']+'"/>');
             $('#wrapper').find('#myimg').load(function(){
                 $('#loader,#wall,#footer').fadeOut().remove();
@@ -72,9 +72,8 @@ $("#wrapper").on('click','#btn',function(){
         type:'post',
         dataType:'json',
         data:{user:u,token:$('#cred').val()},
-        success:function(r){
-          console.log(r);
-        if (r instanceof Object) {
+        success:function(r) {
+          if (r instanceof Object) {
             $('#wall').css('top',0);
             $('#wrapper').append('<input type="text" id="username" placeholder="Username"/></br><input type="password" id="cred" placeholder="Password"/><div id="btn">Go!</div>');
         }
