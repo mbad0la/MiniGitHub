@@ -1,5 +1,6 @@
 var trending = [];
 var events = [];
+var notifs = [];
 var ei = 0;
 var traverse = 0;
 
@@ -32,7 +33,7 @@ function eraseCookie(name) {
     createCookie(name, "", -1);
 }
 
-function formateventobj(obj,type)
+function formateventobj(obj, type)
 {
     if (type == "WatchEvent") {
         return '<span class="link" ref="https://github.com/' + obj['actor']['login'] + '">' + obj['actor']['login'] + '</span><br> starred the repository <br><span class="link" ref="https://github.com/' + obj['repo']['name'] + '">' + obj['repo']['name'] + '</span>';
@@ -42,6 +43,16 @@ function formateventobj(obj,type)
     }
     else if (type == "PushEvent") {
         return '<span class="link" ref="https://github.com/' + obj['actor']['login'] + '">' + obj['actor']['login'] + '</span><br> pushed changes to the repository <br>' + obj['repo']['name'] + '</span>';
+    }
+}
+
+function formatnotifobj(repo, id, type)
+{
+    if (type == "Issue") {
+        return 'Issue #' + id + ' created on <br><span class="link" ref="https://github.com/' + repo + '">' + repo + '</span>';
+    }
+    else if (type == "PullRequest") {
+        return 'Pull Request #' + id + ' on <br><span class="link" ref="https://github.com/' + repo + '">' + repo + '</span>';
     }
 }
 
@@ -209,13 +220,14 @@ $('#addonoptions').on('click','#getnotif',function(){
           if (r.length == 0) {
             $('#Head2').text('Relax!');
             $('#description2').css('text-align', 'center').text('You have no new notifications');
-          } else if (r.length != 1) {
-            $('#Head2').text('Suit Up!');
-            $('#description2').css('text-align', 'center').text('You have ' + r.length + ' new notifications');
-          } else {
-            $('#Head2').text('Almost Nothing!');
-            $('#description2').css('text-align', 'center').text('You have 1 new notification');
+          } else if (r.length != 1) { $('#left2,#right2').css('display', 'block'); }
+          if (r[0]["subject"]["type"] == "Issue") {
+            $('#Head2').empty().append('<span class="mega-octicon more-mega octicon-issue-opened"></span>');
+          } else if (r[0]["subject"]["type"] == "PullRequest") {
+            $('#Head2').empty().append('<span class="mega-octicon more-mega octicon-git-pull-request"></span>');
           }
+          var notifId = r[0]["subject"]["url"].split("/");
+          $('#description2').html(formatnotifobj(r[0]["repository"]["full_name"], notifId[notifId.length - 1], r[0]["subject"]["type"]));
           $('#getnotif').css({'color': '#333'});
           $('#getnotif').find('.octicon.octicon-home').css('color', '#333');
           $('#addonoptions>div').css('pointer-events', 'auto');
@@ -346,7 +358,7 @@ $('#right3').click(function() {
   $('#description3').html(formateventobj(events[ei], events[ei]['type']));
 });
 
-$('#description3').on('click', 'span', function() {
+$('#description3,#description2').on('click', 'span', function() {
   var link = $(this).attr('ref');
   self.port.emit("gotoLink",link);
 });

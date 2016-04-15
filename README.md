@@ -8,14 +8,19 @@ Install the addon for:
 
 #####About the addon
 
-* Compact
-* Impressive UI for an addon ( :P )
-* Powered by Mozilla's Addon SDK
+* **Events Supported :**
+  * Watch(Star)
+  * Fork
+  * Push
+
+* **Notifications Supported :**
+  * Issue
+  * Pull Request
 
 #####Screenshots
 
-![Login Screen](screenshots/login.png) 
-![Main Screen](screenshots/mainmenu.png) 
+![Login Screen](screenshots/login.png)
+![Main Screen](screenshots/mainmenu.png)
 ![Notifs Screen](screenshots/notifs.png)
 ![Trend Screen](screenshots/trending.png)
 ![Events Screen](screenshots/events.png)
