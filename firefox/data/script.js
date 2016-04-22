@@ -2,6 +2,7 @@ var trending = [];
 var events = [];
 var notifs = [];
 var ei = 0;
+var ni = 0;
 var traverse = 0;
 
 function createCookie(name, value, days) {
@@ -49,10 +50,10 @@ function formateventobj(obj, type)
 function formatnotifobj(repo, id, type)
 {
     if (type == "Issue") {
-        return 'Issue #' + id + ' created on <br><span class="link" ref="https://github.com/' + repo + '">' + repo + '</span>';
+        return 'Issue #' + id + ' created on <br><span class="link" ref="https://github.com/' + repo + '/issues/' + id + '">' + repo + '</span>';
     }
     else if (type == "PullRequest") {
-        return 'Pull Request #' + id + ' on <br><span class="link" ref="https://github.com/' + repo + '">' + repo + '</span>';
+        return 'Pull Request #' + id + ' on <br><span class="link" ref="https://github.com/' + repo + '/pull/' + id + '">' + repo + '</span>';
     }
 }
 
@@ -334,6 +335,30 @@ $('#right1').click(function() {
     $('#watchers').text(trending[traverse]['watchers_count']);
     $('#stars').text(trending[traverse]['stars_count']);
     $('#forks').text(trending[traverse]['forks_count']);
+});
+
+$('#left2').click(function() {
+    ni = ni - 1;
+    if (ni == -1) { ni = notifs.length - 1; }
+    if (notifs[ni]["subject"]["type"] == "Issue") {
+      $('#Head2').empty().append('<span class="mega-octicon more-mega octicon-issue-opened"></span>');
+    } else if (notifs[ni]["subject"]["type"] == "PullRequest") {
+      $('#Head2').empty().append('<span class="mega-octicon more-mega octicon-git-pull-request"></span>');
+    }
+    var notifId = notifs[ni]["subject"]["url"].split("/");
+    $('#description2').html(formatnotifobj(notifs[ni]["repository"]["full_name"], notifId[notifId.length - 1], notifs[ni]["subject"]["type"]));
+});
+
+$('#right2').click(function() {
+    ni = ni + 1;
+    if (ni == notifs.length) { ni = 0; }
+    if (notifs[ni]["subject"]["type"] == "Issue") {
+      $('#Head2').empty().append('<span class="mega-octicon more-mega octicon-issue-opened"></span>');
+    } else if (notifs[ni]["subject"]["type"] == "PullRequest") {
+      $('#Head2').empty().append('<span class="mega-octicon more-mega octicon-git-pull-request"></span>');
+    }
+    var notifId = notifs[ni]["subject"]["url"].split("/");
+    $('#description2').html(formatnotifobj(notifs[ni]["repository"]["full_name"], notifId[notifId.length - 1], notifs[ni]["subject"]["type"]));
 });
 
 $('#left3').click(function() {
