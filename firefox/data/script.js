@@ -37,13 +37,24 @@ function eraseCookie(name) {
 function formateventobj(obj, type)
 {
     if (type == "WatchEvent") {
-        return '<span class="link" ref="https://github.com/' + obj['actor']['login'] + '">' + obj['actor']['login'] + '</span><br> starred the repository <br><span class="link" ref="https://github.com/' + obj['repo']['name'] + '">' + obj['repo']['name'] + '</span>';
-    }
-    else if (type == "ForkEvent") {
-        return '<span class="link" ref="https://github.com/' + obj['actor']['login'] + '">' + obj['actor']['login'] + '</span><br> forked the repository <br>' + obj['repo']['name'] + '</span>';
-    }
-    else if (type == "PushEvent") {
-        return '<span class="link" ref="https://github.com/' + obj['actor']['login'] + '">' + obj['actor']['login'] + '</span><br> pushed changes to the repository <br>' + obj['repo']['name'] + '</span>';
+      return '<span class="link" ref="https://github.com/' + obj["actor"]["login"] + '">' + obj["actor"]["login"] + '</span><br> starred the repository <br><span class="link" ref="https://github.com/' + obj["repo"]["name"] + '">' + obj["repo"]["name"] + '</span>';
+    } else if (type == "ForkEvent") {
+      return '<span class="link" ref="https://github.com/' + obj["actor"]["login"] + '">' + obj["actor"]["login"] + '</span><br> forked the repository <br><span class="link" ref="https://github.com/' + obj["repo"]["name"] + '">' + obj["repo"]["name"] + '</span>';
+    } else if (type == "PushEvent") {
+      return '<span class="link" ref="https://github.com/' + obj["actor"]["login"] + '">' + obj["actor"]["login"] + '</span><br> pushed changes to the repository <br><span class="link" ref="https://github.com/' + obj["repo"]["name"] + '">' + obj["repo"]["name"] + '</span>';
+    } else if (type == "IssuesEvent") {
+      return '<span class="link" ref="https://github.com/' + obj["actor"]["login"] + '">' + obj["actor"]["login"] + '</span><br> opened <span class="link" ref="https://github.com/' + obj["repo"]["name"] + '/issues/' + obj["payload"]["issue"]["number"] + '">#' +
+      obj["payload"]["issue"]["number"] + '</span> on<br><span class="link" ref="https://github.com/' + obj["repo"]["name"] + '">' + obj["repo"]["name"] + '</span>';
+    } else if (type == "CreateEvent") {
+      if (obj["payload"]["ref_type"] == "branch") {
+        return '<span class="link" ref="https://github.com/' + obj["actor"]["login"] + '">' + obj["actor"]["login"] + '</span><br> created branch <b>' + obj["payload"]["ref"] +
+        '</b> at<br><span class="link" ref="https://github.com/' + obj["repo"]["name"] + '">' + obj["repo"]["name"] + '</span>';
+      } else {
+        return '<span class="link" ref="https://github.com/' + obj["actor"]["login"] + '">' + obj["actor"]["login"] + '</span><br> created repository <br><span class="link" ref="https://github.com/' + obj["repo"]["name"] + '">' + obj["repo"]["name"] + '</span>';
+      }
+    } else if (type == "MemberEvent") {
+      return '<span class="link" ref="https://github.com/' + obj["actor"]["login"] + '">' + obj["actor"]["login"] + '</span><br> added <span class="link" ref="https://github.com/' + obj["payload"]["member"]["login"] + '">' + obj["payload"]["member"]["login"] + '</span> to<br>' +
+      '<span class="link" ref="https://github.com/' + obj["repo"]["name"] + '">' + obj["repo"]["name"] + '</span>';
     }
 }
 
@@ -281,7 +292,15 @@ $('#addonoptions').on('click', '#getevents', function() {
             $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-star"></span>');
           } else if (r[0]['type'] == "ForkEvent") {
             $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-forked"></span>');
-          } else if (r[0]['type'] == "PushEvent") { $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-push"></span>'); }
+          } else if (r[0]['type'] == "PushEvent") {
+            $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-push"></span>');
+          } else if (r[0]['type'] == "IssuesEvent") {
+            $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-issue-opened"></span>');
+          } else if (r[0]['type'] == "CreateEvent") {
+            if (r[0]['payload']['ref_type'] == "repository") {
+              $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo"></span>');
+            } else if (r[0]['payload']['ref_type'] == "branch") { $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-git-branch"></span>'); }
+          } else if (r[0]['type'] == "MemberEvent") { $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-person"></span>'); }
           $('#description3').html(formateventobj(r[0], r[0]['type']));
           $('#loader').fadeOut().remove();
           $('#datawrap3').fadeIn();
@@ -368,7 +387,15 @@ $('#left3').click(function() {
     $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-star"></span>');
   } else if (events[ei]['type'] == "ForkEvent") {
     $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-forked"></span>');
-  } else if (events[ei]['type'] == "PushEvent") { $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-push"></span>'); }
+  } else if (events[ei]['type'] == "PushEvent") {
+    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-push"></span>');
+  } else if (events[ei]['type'] == "IssuesEvent") {
+    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-issue-opened"></span>');
+  } else if (events[ei]['type'] == "CreateEvent") {
+    if (events[ei]['payload']['ref_type'] == "repository") {
+      $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo"></span>');
+    } else if (events[ei]['payload']['ref_type'] == "branch") { $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-git-branch"></span>'); }
+  } else if (events[ei]['type'] == "MemberEvent") { $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-person"></span>'); }
   $('#description3').html(formateventobj(events[ei], events[ei]['type']));
 });
 
@@ -379,7 +406,15 @@ $('#right3').click(function() {
     $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-star"></span>');
   } else if (events[ei]['type'] == "ForkEvent") {
     $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-forked"></span>');
-  } else if (events[ei]['type'] == "PushEvent") { $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-push"></span>'); }
+  } else if (events[ei]['type'] == "PushEvent") {
+    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo-push"></span>');
+  } else if (events[ei]['type'] == "IssuesEvent") {
+    $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-issue-opened"></span>');
+  } else if (events[ei]['type'] == "CreateEvent") {
+    if (events[ei]['payload']['ref_type'] == "repository") {
+      $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-repo"></span>');
+    } else if (events[ei]['payload']['ref_type'] == "branch") { $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-git-branch"></span>'); }
+  } else if (events[ei]['type'] == "MemberEvent") { $('#Head3').empty().append('<span class="mega-octicon more-mega octicon-person"></span>'); }
   $('#description3').html(formateventobj(events[ei], events[ei]['type']));
 });
 
