@@ -1,7 +1,7 @@
 {
   "title": "MiniGithub",
   "name": "minigithub",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Github Notifier",
   "main": "index.js",
   "author": "Mayank Badola",

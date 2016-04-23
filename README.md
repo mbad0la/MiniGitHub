@@ -12,6 +12,10 @@ Install the addon for:
   * Watch(Star)
   * Fork
   * Push
+  * Member Added
+  * Issue Opened
+  * Repository Created
+  * Branch Created
 
 * **Notifications Supported :**
   * Issue
