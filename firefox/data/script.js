@@ -233,13 +233,15 @@ $('#addonoptions').on('click','#getnotif',function(){
             $('#Head2').text('Relax!');
             $('#description2').css('text-align', 'center').text('You have no new notifications');
           } else if (r.length != 1) { $('#left2,#right2').css('display', 'block'); }
-          if (r[0]["subject"]["type"] == "Issue") {
+          if (r.length != 0 && r[0]["subject"]["type"] == "Issue") {
             $('#Head2').empty().append('<span class="mega-octicon more-mega octicon-issue-opened"></span>');
-          } else if (r[0]["subject"]["type"] == "PullRequest") {
+            var notifId = r[0]["subject"]["url"].split("/");
+            $('#description2').html(formatnotifobj(r[0]["repository"]["full_name"], notifId[notifId.length - 1], r[0]["subject"]["type"]));
+          } else if (r.length != 0 && r[0]["subject"]["type"] == "PullRequest") {
             $('#Head2').empty().append('<span class="mega-octicon more-mega octicon-git-pull-request"></span>');
+            var notifId = r[0]["subject"]["url"].split("/");
+            $('#description2').html(formatnotifobj(r[0]["repository"]["full_name"], notifId[notifId.length - 1], r[0]["subject"]["type"]));
           }
-          var notifId = r[0]["subject"]["url"].split("/");
-          $('#description2').html(formatnotifobj(r[0]["repository"]["full_name"], notifId[notifId.length - 1], r[0]["subject"]["type"]));
           $('#getnotif').css({'color': '#333'});
           $('#getnotif').find('.octicon.octicon-home').css('color', '#333');
           $('#addonoptions>div').css('pointer-events', 'auto');
