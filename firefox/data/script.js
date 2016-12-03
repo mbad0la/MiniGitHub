@@ -227,6 +227,7 @@ $('#addonoptions').on('click','#getnotif',function(){
         dataType: 'json',
         data: {user:user[0], token:user[1]},
         success: function(r) {
+          notifs = r;
           $('#loader').fadeOut().remove();
           $('#left2,#right2').css('display', 'none');
           if (r.length == 0) {
