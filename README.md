@@ -1,12 +1,14 @@
-#MiniGithub
+# MiniGithub
+
 A firefox addon facilitating client to stay connected to his account without logging into the github website.
 
-#####Installation
+##### Installation
+
 Install the addon for:
 * [Firefox](https://addons.mozilla.org/addon/minigithub/)
 
 
-#####About the addon
+##### About the addon
 
 * **Events Supported :**
   * Watch(Star)
@@ -21,7 +23,7 @@ Install the addon for:
   * Issue
   * Pull Request
 
-#####Screenshots
+##### Screenshots
 
 ![Login Screen](screenshots/login.png)
 ![Main Screen](screenshots/mainmenu.png)
@@ -29,7 +31,7 @@ Install the addon for:
 ![Trend Screen](screenshots/trending.png)
 ![Events Screen](screenshots/events.png)
 
-#####Contributions
+##### Contributions
 
 Contributions are very much welcome. Please create an issue regarding how you'd like to improve or implement something in the Addon. I'll stay involved with your suggestions and merge viable requests.
 
